@@ -9,7 +9,7 @@ import java.util.UUID;
 public class SeUserFriend {
     private UUID userId;
     private UUID friendId;
-    private String fullName;
+    private String fullName;  //this can be user full name or friend full name
     private boolean friend;
     private UUID friendshipId;
     private String profilePhoto;

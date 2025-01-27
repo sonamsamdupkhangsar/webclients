@@ -13,6 +13,7 @@ public class FriendshipWebClient {
 
     private final String endpoint;
     private final WebClient.Builder webClientBuilder;
+    private final String requestFriendship = "/friendships/request/{userId}";
 
     public FriendshipWebClient(WebClient.Builder webClientBuilder, String endpoint) {
         this.webClientBuilder = webClientBuilder;
@@ -25,10 +26,11 @@ public class FriendshipWebClient {
      * @return
      */
     public Mono<SeUserFriend> requestFriendshipWithUserId(UUID userId) {
-        StringBuilder stringBuilder = new StringBuilder(endpoint).append("/").append(userId);
+        StringBuilder stringBuilder = new StringBuilder(endpoint).append(requestFriendship);
+        String endpoint = stringBuilder.toString().replace("{userId}", userId.toString());
 
-        LOG.info("create Account record with http call on endpoint: {}", stringBuilder);
-        WebClient.ResponseSpec spec = webClientBuilder.build().post().uri(stringBuilder.toString()).retrieve();
+        LOG.info("create Account record with http call on endpoint: {}", endpoint);
+        WebClient.ResponseSpec spec = webClientBuilder.build().post().uri(endpoint).retrieve();
 
         return spec.bodyToMono(SeUserFriend.class).doOnNext(seUserFriend -> {
                     LOG.info("freindship created with response: {}", seUserFriend);
